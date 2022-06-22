@@ -1,77 +1,79 @@
-import React from 'react';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import InputField from "./components/InputField";
+import TodoList from "./components/TodoList";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { Todo } from "./models/models";
 
-let name: string;
-// let name: any;
-// let name: unknown;
-let age: number | string;
-let isStudent: boolean;
-let hobies: string[];
-let role: [number, string];
+const App: React.FC = () => {
+  const [todo, setTodo] = useState<string>("");
+  const [todos, setTodos] = useState<Array<Todo>>([]);
+  const [CompletedTodos, setCompletedTodos] = useState<Array<Todo>>([]);
 
-// let printName:(name:string) => void;
-let printName:(name:string) => never;
+  const handleAdd = (e: React.FormEvent) => {
+    e.preventDefault();
 
-function printPerson(
-  name:string, 
-  age: number | string,
-  isStudent: boolean,
-  hobies: string[],
-  role: [number, string]
-  ){
-  console.log(
-    "name: ", name,
-    "age:" , age,
-    "isStudent:", isStudent,
-    "hobies:", hobies,
-    "Student Number:", role[0],
-    "Student Role:", role[1]
-    );
-  }
+    if (todo) {
+      setTodos([...todos, { id: Date.now(), todo, isDone: false }]);
+      setTodo("");
+    }
+  };
 
-name= "Joseph2";
-age= 25;
-isStudent = true;
-hobies=["reading", "ride", "football"];
-role= [42351, "Master Student"]
+  const onDragEnd = (result: DropResult) => {
+    const { destination, source } = result;
 
-printPerson(name, age, isStudent, hobies, role);
+    console.log(result);
 
-interface Guy {
-  surname: string;
-  number?: number;
-}
-// extends
+    if (!destination) {
+      return;
+    }
 
-type Person = Guy & {
-  name: string;
-  age?: number;
-}
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
 
-let person: Person ={
-name:'Joseph',
-surname: "Ashiyan",
-age: 25,
-number: 1234,
-}
+    let add;
+    let active = todos;
+    let complete = CompletedTodos;
+    // Source Logic
+    if (source.droppableId === "TodosList") {
+      add = active[source.index];
+      active.splice(source.index, 1);
+    } else {
+      add = complete[source.index];
+      complete.splice(source.index, 1);
+    }
 
-console.log("Person:", person);
+    // Destination Logic
+    if (destination.droppableId === "TodosList") {
+      active.splice(destination.index, 0, add);
+    } else {
+      complete.splice(destination.index, 0, add);
+    }
 
+    setCompletedTodos(complete);
+    setTodos(active);
+  };
 
-
-
-function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p
-          className="App-link"
-        >
-          Welcome to Joseph's Task App
-        </p>
-      </header>
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className="App">
+        <span className="heading">Welcome to Joseph's Task App</span>
+        <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
+        <TodoList
+          todos={todos}
+          setTodos={setTodos}
+          CompletedTodos={CompletedTodos}
+          setCompletedTodos={setCompletedTodos}
+        />
+      </div>
+    </DragDropContext>
   );
-}
+};
 
 export default App;
+          
+ 
