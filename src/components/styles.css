@@ -68,6 +68,12 @@
   .dragcomplete {
     background-color: rgb(255, 38, 0);
   }
+  .dragInProgressRemove {
+    background-color: rgb(107, 240, 147);
+  }
+  .dragInProgress {
+    background-color: rgb(12, 241, 81);
+  }
   
   .remove {
     background-color: rgb(235, 103, 80);

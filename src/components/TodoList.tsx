@@ -7,6 +7,8 @@ interface props {
   todos: Array<Todo>;
   setTodos: React.Dispatch<React.SetStateAction<Array<Todo>>>;
   setCompletedTodos: React.Dispatch<React.SetStateAction<Array<Todo>>>;
+  setInProgress: React.Dispatch<React.SetStateAction<Array<Todo>>>;
+  inProgress: Array<Todo>;
   CompletedTodos: Array<Todo>;
 }
 
@@ -15,6 +17,8 @@ const TodoList: React.FC<props> = ({
   setTodos,
   CompletedTodos,
   setCompletedTodos,
+  inProgress,
+  setInProgress,
 }) => {
   return (
     <div className="container">
@@ -25,7 +29,7 @@ const TodoList: React.FC<props> = ({
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            <span className="todos__heading">Active Tasks</span>
+            <span className="todos__heading">To Do</span>
             {todos?.map((todo, index) => (
               <SingleTodo
                 index={index}
@@ -33,6 +37,27 @@ const TodoList: React.FC<props> = ({
                 todo={todo}
                 key={todo.id}
                 setTodos={setTodos}
+              />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+      <Droppable droppableId="TodosInProgress">
+        {(provided, snapshot) => (
+          <div
+            className={`todos ${snapshot.isDraggingOver ? "dragInProgress" : "dragInProgressRemove"}`}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            <span className="todos__heading">In Progress</span>
+            {inProgress?.map((todo, index) => (
+              <SingleTodo
+                index={index}
+                todos={inProgress}
+                todo={todo}
+                key={todo.id}
+                setTodos={setInProgress}
               />
             ))}
             {provided.placeholder}
@@ -48,7 +73,7 @@ const TodoList: React.FC<props> = ({
               snapshot.isDraggingOver ? "dragcomplete" : "remove"
             }`}
           >
-            <span className="todos__heading">Completed Tasks</span>
+            <span className="todos__heading">Done</span>
             {CompletedTodos?.map((todo, index) => (
               <SingleTodo
                 index={index}
