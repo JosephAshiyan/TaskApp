@@ -56,7 +56,7 @@
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    width: 47.5%;
+    width: 31%;
     padding: 15px;
     background-color: rgb(50, 195, 205);
   }
@@ -90,7 +90,9 @@
     border-radius: 5px;
     padding: 20px;
     margin-top: 15px;
-    background-image: url("https://img.freepik.com/free-photo/crumpled-yellow-paper-background-close-up_60487-2390.jpg?size=626&ext=jpg");
+    background-image: url("https://t4.ftcdn.net/jpg/03/06/55/89/360_F_306558910_4wlkDfbX6iqtXmO4NeFBu41eXapMSotN.jpg");
+    /* background-image: url("https://sonocoasia.com/sites/default/files/2020-12/paper-packaging.jpg"); */
+    /* background-image: url("https://img.freepik.com/free-photo/crumpled-yellow-paper-background-close-up_60487-2390.jpg?size=626&ext=jpg"); */
     transition: 0.2s;
   }
   
